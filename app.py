@@ -1,20 +1,26 @@
-from flask import Flask, render_template, request, url_for,redirect
+from flask import Flask, render_template, request, url_for,redirect,flash
 
 app = Flask(__name__)
 
 @app.route('/')
 def index():
-    return 'R2D2'
+    return render_template('home.html')
 
 @app.route('/login',methods=['POST', 'GET'])
 def login():
+    error = None
     if request.method == "POST":
-        if request.form['username'] == 'admin' and request.form['password'] == 'admin':
-            return render_template(('base.html'))
+        if valid(request.form['username'],request.form['password']):
+            return redirect(url_for('index'))
         else:
-            return "Inconrrect user and password"
-    return render_template('login.html')
+            error = "Inconrrect User and Password"
+    return render_template('login.html',error=error)
 
+def valid(user,pasw):
+    if user == pasw:
+        return True
+    else:
+        False
 @app.route('/user/<name>')
 def user(name):
     return name
