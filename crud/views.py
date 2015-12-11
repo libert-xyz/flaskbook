@@ -1,8 +1,8 @@
-from flask import Flask, render_template, request, url_for,redirect,flash,session
+from flask_crud import app
+from flask import render_template, request, url_for,redirect,flash,session
+from models import User
 import logging
 from logging.handlers import RotatingFileHandler
-
-app = Flask(__name__)
 
 @app.route('/')
 def index():
@@ -15,21 +15,20 @@ def index():
 @app.route('/login',methods=['POST', 'GET'])
 def login():
     error = None
+
     if request.method == "POST":
-        if valid(request.form['username'],request.form['password']):
+        users = User.query.filter_by(username=request.form['username']).first()
+        password = User.query.filter_by(password=request.form['password']).first()
+        if users is not None and password is not None:
+        #if request.form['username'] == 'admin' and request.form['password'] == 'admin':
             session['username'] = request.form['username']
             return redirect(url_for('index'))
         else:
-            error = "Inconrrect User and Password"
+            error = "Incorrect User and Password"
             app.logger.warning('Incorrect username passwword for user (%s)',
                                 request.form.get('username'))
     return render_template('login.html',error=error)
 
-def valid(user,pasw):
-    if user == pasw:
-        return True
-    else:
-        False
 @app.route('/user/<name>')
 def user(name):
     return name
@@ -42,12 +41,3 @@ def post(post_id):
 def logout():
     session.pop('username',None)
     return redirect(url_for('login'))
-
-if __name__ == "__main__":
-    app.debug = True
-    app.secret_key = 'secret!'
-    # logging
-    handler = RotatingFileHandler('error.log', maxBytes=10000, backupCount=1)
-    handler.setLevel(logging.INFO)
-    app.logger.addHandler(handler)
-    app.run()
