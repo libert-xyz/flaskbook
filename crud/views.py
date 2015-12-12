@@ -1,6 +1,6 @@
 from flask_crud import app
 from flask import render_template, request, url_for,redirect,flash,session
-from models import User
+from models import User, bcrypt
 import logging
 from logging.handlers import RotatingFileHandler
 
@@ -18,14 +18,14 @@ def login():
 
     if request.method == "POST":
         users = User.query.filter_by(username=request.form['username']).first()
-        password = User.query.filter_by(password=request.form['password']).first()
-        if users is not None and password is not None:
+        if users is not None and bcrypt.check_password_hash(
+        users.password,request.form['password']):
         #if request.form['username'] == 'admin' and request.form['password'] == 'admin':
             session['username'] = request.form['username']
             return redirect(url_for('index'))
         else:
             error = "Incorrect User and Password"
-            app.logger.warning('Incorrect username passwword for user (%s)',
+            app.logger.warning('Incorrect passwword for username (%s)',
                                 request.form.get('username'))
     return render_template('login.html',error=error)
 

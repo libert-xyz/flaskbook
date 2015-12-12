@@ -6,8 +6,9 @@ from flask_crud import db
 from crud.models import User
 try:
 
-    db.session.add(User('test maxi','test','test@rest.blow','pass'))
+    db.session.add(User('evo cumple','evo','glinera@generacionevo.com','evo'))
     db.session.commit()
 
 except:
+
     print "user exists!"
