@@ -23,12 +23,14 @@
             <a class="navbar-brand" href="#">Katari CRUD</a>
           </div>
           <div id="navbar" class="navbar-collapse collapse">
+
             <form class="navbar-form navbar-right" action="{{ url_for('login') }}" method="POST">
-              <div class="form-group">
-                <input type="text" placeholder="Username" name="username" class="form-control">
+              {{ form2.csrf_token }}
+            <div class="form-group">
+                {{ form2.username(placeholder="Username", class="form-control") }} <br>
               </div>
               <div class="form-group">
-                <input type="password" placeholder="Password" name="password" class="form-control">
+                {{ form2.password(placeholder="Password", class="form-control") }} <br>
               </div>
               <button type="submit" class="btn btn-success">Log in</button>
             </form>
@@ -36,42 +38,75 @@
 
         </div>
    </nav>
-
-   {% if error%}
+   {% if loginError %}
      <div class="alert alert-custom alert-danger container" role='alert'>
        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
        <span class='sr-only'>Error:</span>
-       {{ error }}
+       {{ loginError }}
      </div>
    {% endif %}
 <!--/.Container SignIn -->
 
     <br><br><br>
     <div class="container">
-      <form class="form-signin" method="POST">
-            <h2 class="form-signin-heading">Please Sign Up</h2>
-            <label for="fullname" class="sr-only">Full Name</label>
-            <input type="text" class="form-control" placeholder="Full Name" name='fullname' required autofocus><br>
-
-            <label for="username" class="sr-only">Username</label>
-            <input type="text" class="form-control" placeholder="Username" name='username' required autofocus><br>
-
-            <label for="email" class="sr-only">Email</label>
-            <input type="email" class="form-control" placeholder="Email" name='email' required autofocus><br>
-
-            <label for="password" class="sr-only">Password</label>
-            <input type="password" class="form-control" placeholder="Password" name='password' required>
-
-            <label for="password-ctrl" class="sr-only">Repeat Password</label>
-            <input type="password" class="form-control" placeholder="Repeat password" name='password-ctrl' required>
-
-            <button type="submit" class="btn btn-lg btn-primary btn-block">Sign Up</button><br>
+      <form class="form-signin" method="POST" action="{{ url_for('register') }}">
+        {{ form1.csrf_token }}
+        <h2 class="form-signin-heading">Please Sign Up</h2>
+          {{ form1.fullname(placeholder="Full Name", class="form-control") }} <br>
+          {{ form1.username(placeholder="Username", class="form-control") }}<br>
+          {{ form1.email(placeholder="Email", class="form-control")}}<br>
+          {{ form1.password(placeholder="Password", class="form-control")}}<br>
+          {{ form1.confirm(placeholder="Re-enter Password", class="form-control")}}
+              <button type="submit" class="btn btn-lg btn-primary btn-block">Sign Up</button><br>
             <!-- Showing the error -->
-            {% if error%}
+            {% if form1.fullname.errors %}
+              {% for error in form1.fullname.errors %}
               <div class="alert alert-danger" role='alert'>
                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                 <span class='sr-only'>Error:</span>
                 {{ error }}
+              </div>
+                {% endfor %}
+            {% endif %}
+
+            <!-- Showing the error Username -->
+            {% if form1.username.errors %}
+              {% for error in form1.username.errors %}
+              <div class="alert alert-danger" role='alert'>
+                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                <span class='sr-only'>Error:</span>
+                {{ error }}
+              </div>
+                {% endfor %}
+            {% endif %}
+
+            <!-- Showing the error email -->
+            {% if form1.email.errors %}
+              {% for error in form1.email.errors %}
+              <div class="alert alert-danger" role='alert'>
+                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                <span class='sr-only'>Error:</span>
+                {{ error }}
+              </div>
+                {% endfor %}
+            {% endif %}
+
+            <!-- Showing the error password -->
+            {% if form1.password.errors %}
+              {% for error in form1.password.errors %}
+              <div class="alert alert-danger" role='alert'>
+                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                <span class='sr-only'>Error:</span>
+                {{ error }}
+              </div>
+                {% endfor %}
+            {% endif %}
+
+            {% if registerError %}
+              <div class="alert alert-danger" role='alert'>
+                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                <span class='sr-only'>Error:</span>
+                {{ registerError }}
               </div>
             {% endif %}
       </form>
