@@ -8,10 +8,19 @@ from logging.handlers import RotatingFileHandler
 @app.route('/')
 def index():
     if 'username' in session:
-        return render_template('home.html')
+        userAll = User.query.all()
+        username = []
+        email = []
+        fullname = []
+        index = []
+        for u in range(len(userAll)):
+            index.append(u+1)
+            username.append(userAll[u].username)
+            email.append(userAll[u].email)
+            fullname.append(userAll[u].fullname)
+        return render_template('home.html',query=zip(index,fullname,username,email))
     else:
         return redirect(url_for('login'))
-
 
 @app.route('/login',methods=['POST', 'GET'])
 def login():
