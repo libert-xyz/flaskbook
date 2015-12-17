@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block content%}
+
+<h3>Welcome {{ session['username'] }}</h3>
+<p>
+  Sweet Home
+</p>
+
+
+<div class="panel panel-default">
+  <!-- Default panel contents -->
+  <div class="panel-heading">Users</div>
+  <div class="panel-body">
+    <!-- Table -->
+    <table class="table table-striped">
+      <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Name</th>
+                  <th>Username</th>
+                  <th>Email</th>
+                </tr>
+      </thead>
+              <tbody>
+                {% for index,name,user,mail in query %}
+                <tr>
+                  <td>{{ index }}</td>
+                  <td>{{ name }}</td>
+                  <td>{{ user }}</td>
+                  <td>{{ mail }}</td>
+                </tr>
+                {% endfor %}
+              </tbody>
+    </table>
+  </div>
+
+
+</div>
+
+
+{% endblock content%}

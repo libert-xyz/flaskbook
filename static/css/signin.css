@@ -1,9 +1,26 @@
+.alert-custom {
+   width:31%;
+   margin-right:10%;
+   align-items: center;
+   float: right;
+}
+
 body {
   padding-top: 40px;
   padding-bottom: 40px;
   background-color: #eee;
 }
 
+.error-custom{
+
+  float: right;
+}
+
+
+.footer-custom{
+  max-width: 330px;
+
+}
 .form-signin {
   max-width: 330px;
   padding: 15px;
