@@ -1,6 +1,6 @@
 from flask_crud import app, db
 from flask import render_template, request, url_for,redirect,flash,session
-from models import User, bcrypt
+#from models import User, bcrypt
 from form import RegistrationForm,LoginForm
 import logging
 from logging.handlers import RotatingFileHandler
