@@ -1,10 +1,9 @@
 #Create the Database
 
-import os, sys
+#import os, sys
+#sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-
-from flask_crud import app
+from crud import app
 import sqlalchemy
 
 try:
