@@ -1,5 +1,5 @@
-import os, sys
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+#import os, sys
+#sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 import unittest
 from flask.ext.testing import TestCase
 from flask_crud import app,db

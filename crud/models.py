@@ -1,4 +1,4 @@
-from flask_crud import db,bcrypt
+from crud import db,bcrypt
 
 
 class User(db.Model):
@@ -14,6 +14,25 @@ class User(db.Model):
         self.username = username
         self.email = email
         self.password = bcrypt.generate_password_hash(password)
+
+    @property
+    def is_authenticated(self):
+        return True
+
+    @property
+    def is_active(self):
+        return True
+
+    @property
+    def is_anonymous(self):
+        return False
+
+    def get_id(self):
+        try:
+            return unicode(self.id)  # python 2
+        except NameError:
+            return str(self.id)  # python 3
+
 
     def __repr__(self):
         return '<User %r>' %self.username
