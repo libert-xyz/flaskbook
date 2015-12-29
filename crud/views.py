@@ -95,24 +95,32 @@ def update():
     userlog = current_user
     if updateForm.validate_on_submit():
         user = User.query.get(userlog.id)
-        user.fullname=updateForm.fullname.data
-        user.phone=updateForm.phone.data
-        user.location=updateForm.location.data
-        user.website=updateForm.website.data
-        user.about_me=updateForm.about.data
+        if updateForm.fullname.data != '':
+            user.fullname=updateForm.fullname.data
+        if updateForm.phone.data != '':
+            user.phone=updateForm.phone.data
+        if updateForm.location.data != '':
+            user.location=updateForm.location.data
+        if updateForm.website.data != '':
+            user.website=updateForm.website.data
+        if updateForm.about.data != '':
+            user.about_me=updateForm.about.data
+
         db.session.add(user)
         db.session.commit()
         flash('Your changes have been saved.')
-    else:
-        user = User.query.filter_by(id=userlog.id)
-        updateForm.fullname.data = user.fullname
-        updateForm.phone.data = user.phone
-        update.location.data = user.location
-        updateForm.website.data = user.website
-        updateForm.about.data = user.about
+        return redirect(url_for('user'))
 
-    return render_template('user.html',userlog=userlog,postForm=PostForm(),showPost=posted(),updateForm=updateForm)
 
+    #return render_template('user.html',userlog=userlog,postForm=PostForm(),showPost=posted(),updateForm=updateForm)
+
+@app.before_request
+def before_request():
+    userlog = current_user
+    if userlog.is_authenticated:
+        userlog.last_seen = datetime.utcnow()
+        db.session.add(userlog)
+        db.session.commit()
 
 @app.route('/post/<int:post_id>')
 def post(post_id):
