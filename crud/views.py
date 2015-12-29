@@ -1,12 +1,11 @@
 from crud import app, db
 from flask import render_template, request, url_for,redirect,flash,session
-from models import User, bcrypt
-from form import RegistrationForm,LoginForm
+from models import User, Post,bcrypt
+from form import RegistrationForm,LoginForm,PostForm
 import logging
 from logging.handlers import RotatingFileHandler
 from flask.ext.login import login_required,logout_user,login_user,current_user
-
-
+from datetime import datetime
 
 @app.route('/')
 @login_required
@@ -37,6 +36,7 @@ def login():
         if users:
             if bcrypt.check_password_hash(users.password,login.password.data):
                 login_user(users)
+                flash("You were logged in")
                 return redirect(url_for('index'))
         else:
             loginError = "Incorrect User and Password"
@@ -60,7 +60,7 @@ def register():
             register.password.data)
             db.session.add(user)
             db.session.commit()
-            login_user(user_unique)
+            login_user(user)
             flash("Thank's for registering")
             return redirect(url_for('index'))
         else:
@@ -68,11 +68,23 @@ def register():
     return render_template('login.html',form1=register,form2=LoginForm(),loginError=None,registerError=registerError)
 
 
-@app.route('/user/<username>')
-def user(username):
-    user = User.query.filter_by(username=username).first()
+@app.route('/user',methods=["GET","POST"])
+def user():
+    postForm = PostForm()
+    postError = None
+    userlog = current_user
+    if postForm.validate_on_submit():
+        post = Post(postForm.body.data,datetime.utcnow(),userlog.id)
+        db.session.add(post)
+        db.session.commit()
+        flash("Posted")
+    else:
+        postError = "Write something!"
 
-    return name
+    u = User.query.get(userlog.id)
+    posted = u.posts.all()
+
+    return render_template('user.html',userlog=userlog,postForm=postForm,error=postError,showPost=posted)
 
 @app.route('/post/<int:post_id>')
 def post(post_id):

@@ -15,3 +15,6 @@ class RegistrationForm(Form):
 class LoginForm(Form):
     username = TextField("Username", validators=[DataRequired()])
     password = PasswordField("Password", validators=[DataRequired()])
+
+class PostForm(Form):
+    body = TextField("Body", validators=[DataRequired()])
