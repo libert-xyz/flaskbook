@@ -1,7 +1,7 @@
 from crud import app, db
 from flask import render_template, request, url_for,redirect,flash,session
 from models import User, Post,bcrypt
-from form import RegistrationForm,LoginForm,PostForm
+from form import RegistrationForm,LoginForm,PostForm,UpdateForm
 import logging
 from logging.handlers import RotatingFileHandler
 from flask.ext.login import login_required,logout_user,login_user,current_user
@@ -81,10 +81,38 @@ def user():
     else:
         postError = "Write something!"
 
-    u = User.query.get(userlog.id)
-    posted = u.posts.all()
+    return render_template('user.html',userlog=userlog,postForm=postForm,error=postError,showPost=posted(),updateForm=UpdateForm())
 
-    return render_template('user.html',userlog=userlog,postForm=postForm,error=postError,showPost=posted)
+def posted():
+        userlog = current_user
+        u = User.query.get(userlog.id)
+        posted = u.posts.all()
+        return posted
+
+@app.route('/update',methods=["GET","POST"])
+def update():
+    updateForm = UpdateForm()
+    userlog = current_user
+    if updateForm.validate_on_submit():
+        user = User.query.get(userlog.id)
+        user.fullname=updateForm.fullname.data
+        user.phone=updateForm.phone.data
+        user.location=updateForm.location.data
+        user.website=updateForm.website.data
+        user.about_me=updateForm.about.data
+        db.session.add(user)
+        db.session.commit()
+        flash('Your changes have been saved.')
+    else:
+        user = User.query.filter_by(id=userlog.id)
+        updateForm.fullname.data = user.fullname
+        updateForm.phone.data = user.phone
+        update.location.data = user.location
+        updateForm.website.data = user.website
+        updateForm.about.data = user.about
+
+    return render_template('user.html',userlog=userlog,postForm=PostForm(),showPost=posted(),updateForm=updateForm)
+
 
 @app.route('/post/<int:post_id>')
 def post(post_id):

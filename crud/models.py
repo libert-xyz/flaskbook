@@ -10,6 +10,10 @@ class User(db.Model):
     password = db.Column(db.String(80))
     about_me = db.Column(db.String(140))
     last_seen = db.Column(db.DateTime)
+    phone = db.Column(db.String(20))
+    location = db.Column(db.String(50))
+    website = db.Column(db.String(50))
+
     posts = db.relationship('Post',backref="author",lazy='dynamic')
 
     def __init__(self,fullname,username,email,password):

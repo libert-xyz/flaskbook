@@ -18,3 +18,10 @@ class LoginForm(Form):
 
 class PostForm(Form):
     body = TextField("Body", validators=[DataRequired()])
+
+class UpdateForm(Form):
+    fullname = TextField("Fullname")
+    phone = TextField("Phone")
+    location = TextField("Location")
+    website = TextField("Website")
+    about = TextField("About")
