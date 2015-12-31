@@ -2,6 +2,8 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask.ext.bcrypt import Bcrypt
 from flask.ext.login import LoginManager
+from .momentjs import momentjs
+
 
 
 app = Flask(__name__)
@@ -10,6 +12,7 @@ db = SQLAlchemy(app)
 bcrypt = Bcrypt(app)
 login_manager = LoginManager()
 login_manager.init_app(app)
+app.jinja_env.globals['momentjs'] = momentjs
 
 from crud import views,models
 
