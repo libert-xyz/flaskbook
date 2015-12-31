@@ -1,7 +1,7 @@
 #import os, sys
 #sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
-from crud import db
+from book import db
 from crud.models import User
 try:
 

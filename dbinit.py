@@ -3,7 +3,7 @@
 #import os, sys
 #sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
-from crud import app
+from book import app
 import sqlalchemy
 
 try:
@@ -19,8 +19,8 @@ except:
     print "Database exists"
 
 
-from flask_crud import db
+from flaskbook import db
 
-from crud.models import *
+from book.models import *
 
 db.create_all()

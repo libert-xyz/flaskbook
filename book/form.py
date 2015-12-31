@@ -15,3 +15,13 @@ class RegistrationForm(Form):
 class LoginForm(Form):
     username = TextField("Username", validators=[DataRequired()])
     password = PasswordField("Password", validators=[DataRequired()])
+
+class PostForm(Form):
+    body = TextField("Body", validators=[DataRequired()])
+
+class UpdateForm(Form):
+    fullname = TextField("Fullname")
+    phone = TextField("Phone")
+    location = TextField("Location")
+    website = TextField("Website")
+    about = TextField("About")
