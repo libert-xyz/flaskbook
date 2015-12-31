@@ -14,7 +14,7 @@ login_manager = LoginManager()
 login_manager.init_app(app)
 app.jinja_env.globals['momentjs'] = momentjs
 
-from crud import views,models
+from book import views,models
 
 login_manager.login_view = "login"
 

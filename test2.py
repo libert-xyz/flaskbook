@@ -1,7 +1,7 @@
 import unittest
 from flask.ext.testing import TestCase
-from crud import app,db
-from crud.models import *
+from book import app,db
+from book.models import *
 from datetime import datetime, timedelta
 
 

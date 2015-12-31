@@ -1,7 +1,7 @@
 #import os, sys
 #sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
-from crud import app,db
+from book import app,db
 from flask.ext.script import Manager
 from flask.ext.migrate import Migrate,MigrateCommand
 

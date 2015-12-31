@@ -1,4 +1,4 @@
-from crud import app, db
+from book import app, db
 from flask import render_template, request, url_for,redirect,flash,session,g
 from models import User, Post,bcrypt
 from form import RegistrationForm,LoginForm,PostForm,UpdateForm

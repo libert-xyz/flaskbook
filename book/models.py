@@ -1,4 +1,4 @@
-from crud import db,bcrypt
+from book import db,bcrypt
 from hashlib import md5
 
 
