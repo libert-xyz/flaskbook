@@ -1,5 +1,5 @@
 from crud import app, db
-from flask import render_template, request, url_for,redirect,flash,session
+from flask import render_template, request, url_for,redirect,flash,session,g
 from models import User, Post,bcrypt
 from form import RegistrationForm,LoginForm,PostForm,UpdateForm
 import logging
@@ -23,6 +23,8 @@ def index():
         email.append(userAll[u].email)
         fullname.append(userAll[u].fullname)
     return render_template('home.html',query=zip(index,fullname,username,email),userlog=userlog)
+
+
 
 @app.route('/login',methods=['POST', 'GET'])
 def login():
@@ -130,3 +132,46 @@ def post(post_id):
 def logout():
     logout_user()
     return redirect(url_for('login'))
+
+
+@app.route('/follow/<username>')
+@login_required
+def follow(username):
+    userlog = current_user
+
+    user = User.query.filter_by(username=username).first()
+    if user is None:
+        flash('User %s not found.' % username)
+        return redirect(url_for('index'))
+    if user == userlog.username:
+        flash('You can\'t follow yourself!')
+        return redirect(url_for('user', username=username))
+    u = userlog.follow(user)
+    if u is None:
+        flash('Cannot follow ' + username + '.')
+        return redirect(url_for('user', username=username))
+    db.session.add(u)
+    db.session.commit()
+    flash('You are now following ' + username + '!')
+    return redirect(url_for('user', username=username))
+
+@app.route('/unfollow/<username>')
+@login_required
+def unfollow(username):
+    user = User.query.filter_by(username=username).first()
+    userlog = current_user
+
+    if user is None:
+        flash('User %s not found.' % username)
+        return redirect(url_for('index'))
+    if user == userlog.username:
+        flash('You can\'t unfollow yourself!')
+        return redirect(url_for('user', username=username))
+    u = userlog.unfollow(user)
+    if u is None:
+        flash('Cannot unfollow ' + nickname + '.')
+        return redirect(url_for('user', username=username))
+    db.session.add(u)
+    db.session.commit()
+    flash('You have stopped following ' + username + '.')
+    return redirect(url_for('user', username=username))

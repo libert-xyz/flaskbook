@@ -36,7 +36,15 @@
             <li class="list-group-item text-right"><span class="pull-left"><strong>Shares</strong></span> 125</li>
             <li class="list-group-item text-right"><span class="pull-left"><strong>Likes</strong></span> 13</li>
             <li class="list-group-item text-right"><span class="pull-left"><strong>Posts</strong></span> 37</li>
-            <li class="list-group-item text-right"><span class="pull-left"><strong>Followers</strong></span> 78</li>
+            <li class="list-group-item text-right"><span class="pull-left"><strong>Followers</strong></span>
+
+              {% if not userlog.is_following(userlog) %}
+                  <a href="{{ url_for('follow', username=userlog.username) }}">Follow</a>
+              {% else %}
+                  <a href="{{ url_for('unfollow', username=userlog.username) }}">Unfollow</a>
+              {% endif %}
+
+            </li>
           </ul>
 
           <div class="panel panel-default">
