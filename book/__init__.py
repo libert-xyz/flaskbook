@@ -4,7 +4,7 @@ from flask.ext.bcrypt import Bcrypt
 from flask.ext.login import LoginManager
 from .momentjs import momentjs
 
-
+from flask.ext.heroku import Heroku
 
 app = Flask(__name__)
 app.config.from_object('config')
@@ -13,6 +13,10 @@ bcrypt = Bcrypt(app)
 login_manager = LoginManager()
 login_manager.init_app(app)
 app.jinja_env.globals['momentjs'] = momentjs
+
+
+heroku = Heroku(app)
+
 
 from book import views,models
 
